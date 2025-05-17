@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>Добро пожаловать в систему дистанционного обучения СПбУТУиЭ!</h1>
+<p>Ведущий вуз по подготовке специалистов для экономики России.</p>
+
+<h3>Новости</h3>
+<ul>
+  {% for item in news %}
+    <li><a href="{% url 'news_detail' item.id %}">{{ item.title }}</a> <small>({{ item.date_published }})</small></li>
+  {% empty %}
+    <li>Пока нет новостей</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'news_list' %}">Все новости</a>
+
+<h3 class="mt-4">Ближайшие анонсы</h3>
+<ul>
+  {% for item in announcements %}
+    <li>{{ item.title }} <small>({{ item.date_published }})</small></li>
+  {% empty %}
+    <li>Пока нет анонсов</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'announcements' %}">Все анонсы</a>
+
+<h3 class="mt-4">Конкурсы и гранты</h3>
+<ul>
+  {% for item in contests %}
+    <li>{{ item.title }} — до {{ item.deadline }}</li>
+  {% empty %}
+    <li>Пока нет конкурсов</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'contests' %}">Все конкурсы и гранты</a>
+{% endblock %}

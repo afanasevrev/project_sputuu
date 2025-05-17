@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h2>Новости</h2>
+<ul>
+  {% for item in news %}
+    <li>
+      <a href="{% url 'news_detail' item.id %}">{{ item.title }}</a>
+      <small>({{ item.date_published }})</small>
+    </li>
+  {% empty %}
+    <li>Нет новостей</li>
+  {% endfor %}
+</ul>
+{% endblock %}
