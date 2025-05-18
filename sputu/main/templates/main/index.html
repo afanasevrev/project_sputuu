@@ -13,15 +13,15 @@
 </ul>
 <a href="{% url 'news_list' %}">Все новости</a>
 
-<h3 class="mt-4">Ближайшие анонсы</h3>
+<h3 class="mt-4">Обучающие материалы</h3>
 <ul>
   {% for item in announcements %}
     <li>{{ item.title }} <small>({{ item.date_published }})</small></li>
   {% empty %}
-    <li>Пока нет анонсов</li>
+    <li>Пока нет материалов</li>
   {% endfor %}
 </ul>
-<a href="{% url 'announcements' %}">Все анонсы</a>
+<a href="{% url 'announcements' %}">Все материалы</a>
 
 <h3 class="mt-4">Конкурсы и гранты</h3>
 <ul>
