@@ -67,3 +67,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email для формы контактов
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST_USER = 'admin@example.com'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

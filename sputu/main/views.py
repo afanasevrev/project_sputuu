@@ -1,44 +1,67 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import News, Announcement, Contest, Program
-from .forms import ContactForm
-from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from .models import Material, Homework, HomeworkSubmission, Course
+from .forms import HomeworkSubmissionForm, UserRegistrationForm
 
+def home(request):
+    return render(request, 'main/index.html')
 
-def index(request):
-    news = News.objects.order_by('-date_published')[:3]
-    announcements = Announcement.objects.order_by('-date_published')[:3]
-    contests = Contest.objects.order_by('-deadline')[:3]
-    return render(request, 'main/index.html', {
-        'news': news, 'announcements': announcements, 'contests': contests
-    })
+@login_required
+def profile(request):
+    return render(request, 'main/profile.html')
 
-def news_list(request):
-    news = News.objects.order_by('-date_published')
-    return render(request, 'main/news_list.html', {'news': news})
+@login_required
+def materials_list(request):
+    materials = Material.objects.filter(course__students=request.user)
+    return render(request, 'main/materials_list.html', {'materials': materials})
 
-def news_detail(request, pk):
-    article = get_object_or_404(News, pk=pk)
-    return render(request, 'main/news_detail.html', {'article': article})
+@login_required
+def material_detail(request, id):
+    material = get_object_or_404(Material, id=id)
+    return render(request, 'main/material_detail.html', {'material': material})
 
-def announcements(request):
-    items = Announcement.objects.order_by('-date_published')
-    return render(request, 'main/announcements.html', {'items': items})
+@login_required
+def homework_list(request):
+    homeworks = Homework.objects.filter(course__students=request.user)
+    return render(request, 'main/homework_list.html', {'homeworks': homeworks})
 
-def contests(request):
-    items = Contest.objects.order_by('-deadline')
-    return render(request, 'main/contests.html', {'items': items})
-
-def programs(request):
-    programs = Program.objects.all()
-    return render(request, 'main/programs.html', {'programs': programs})
-
-def contacts(request):
+@login_required
+def homework_upload(request, id):
+    homework = get_object_or_404(Homework, id=id)
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = HomeworkSubmissionForm(request.POST, request.FILES)
         if form.is_valid():
-            form.send_email()
-            messages.success(request, 'Ваше сообщение отправлено!')
-            return redirect('contacts')
+            submission = form.save(commit=False)
+            submission.homework = homework
+            submission.student = request.user
+            submission.save()
+            return redirect('homework_list')
     else:
-        form = ContactForm()
-    return render(request, 'main/contacts.html', {'form': form})
+        form = HomeworkSubmissionForm()
+    return render(request, 'main/homework_upload.html', {'form': form, 'homework': homework})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('profile')
+    return render(request, 'main/login.html')
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'main/register.html', {'form': form})
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('home')

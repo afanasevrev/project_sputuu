@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Учебные материалы{% endblock %}
+
+{% block content %}
+    <h1>Учебные материалы</h1>
+    {% if materials %}
+        <ul>
+            {% for material in materials %}
+                <li>
+                    <a href="{% url 'material_detail' material.id %}">{{ material.title }}</a>
+                    <p>Курс: {{ material.course.name }}</p>
+                    <p>Добавлено: {{ material.uploaded_at }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Материалы пока отсутствуют.</p>
+    {% endif %}
+{% endblock %}

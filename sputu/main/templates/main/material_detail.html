@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ material.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ material.title }}</h1>
+    <p><strong>Курс:</strong> {{ material.course.name }}</p>
+    <p><strong>Описание:</strong> {{ material.description }}</p>
+    <p><strong>Добавлено:</strong> {{ material.uploaded_at }}</p>
+    <a href="{{ material.file.url }}" download>Скачать материал</a>
+{% endblock %}

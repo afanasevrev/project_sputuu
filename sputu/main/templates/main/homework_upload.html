@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Загрузить решение{% endblock %}
+
+{% block content %}
+    <h1>Загрузить решение для "{{ homework.title }}"</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock %}

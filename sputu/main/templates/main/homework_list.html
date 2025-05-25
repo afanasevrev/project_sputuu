@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Домашние задания{% endblock %}
+
+{% block content %}
+    <h1>Домашние задания</h1>
+    {% if homeworks %}
+        <ul>
+            {% for homework in homeworks %}
+                <li>
+                    <strong>{{ homework.title }}</strong> (Курс: {{ homework.course.name }})
+                    <p>Срок сдачи: {{ homework.deadline }}</p>
+                    {% if homework.submission %}
+                        <p>Сдано: {{ homework.submission.submitted_at }}</p>
+                    {% else %}
+                        <a href="{% url 'homework_upload' homework.id %}">Загрузить решение</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Домашние задания отсутствуют.</p>
+    {% endif %}
+{% endblock %}
