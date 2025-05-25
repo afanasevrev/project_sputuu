@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Material, Homework, HomeworkSubmission, Course, Announcement, Program
 from .forms import ContactForm, UserRegistrationForm, HomeworkSubmissionForm
+from django.contrib.auth.forms import AuthenticationForm
 
 
 def home(request):
@@ -48,16 +49,33 @@ def homework_upload(request, id):
     return render(request, 'main/homework_upload.html', {'form': form, 'homework': homework})
 
 
+#def login_view(request):
+#    if request.method == 'POST':
+#        username = request.POST['username']
+#        password = request.POST['password']
+#        user = authenticate(request, username=username, password=password)
+#        if user is not None:
+#            login(request, user)
+#            return redirect('profile')
+#    return render(request, 'main/login.html')
+
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('profile')
-    return render(request, 'main/login.html')
-
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('profile')  # Замените 'home' на нужный URL
+            else:
+                return render(request, 'main/login.html', {'form': form, 'error': 'Неверный логин или пароль'})
+        else:
+            return render(request, 'main/login.html', {'form': form})
+    else:
+        form = AuthenticationForm()
+    return render(request, 'main/login.html', {'form': form})
 
 def register_view(request):
     if request.method == 'POST':
