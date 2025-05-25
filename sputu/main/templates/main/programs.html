@@ -1,10 +1,21 @@
 {% extends "main/base.html" %}
 {% block content %}
 <h2>Программы</h2>
-<p>Задайте вопрос — мы ответим!</p>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary mt-2">Отправить</button>
-</form>
+{% if programs %}
+    <ul>
+        {% for program in programs %}
+            <li>
+                <h3>{{ program.title }}</h3>
+                <p>{{ program.description }}</p>
+                <p>Продолжительность: {{ program.duration }}</p>
+                <p>Степень: {{ program.degree }}</p>
+                {% if program.link %}
+                    <a href="{{ program.link }}">Подробнее</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Программ пока нет.</p>
+{% endif %}
 {% endblock %}

@@ -1,10 +1,17 @@
 {% extends "main/base.html" %}
 {% block content %}
-<h2>Контакты</h2>
-<p>Задайте вопрос — мы ответим!</p>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary mt-2">Отправить</button>
-</form>
+<h2>Объявления</h2>
+{% if announcements %}
+    <ul>
+        {% for announcement in announcements %}
+            <li>
+                <h3>{{ announcement.title }}</h3>
+                <p>{{ announcement.content }}</p>
+                <p>Опубликовано: {{ announcement.date_published }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Объявлений пока нет.</p>
+{% endif %}
 {% endblock %}

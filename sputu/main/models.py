@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 # Расширение профиля пользователя
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s profile"
+
 
 # Курс
 class Course(models.Model):
@@ -20,6 +22,7 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # Учебный материал
 class Material(models.Model):
@@ -33,6 +36,7 @@ class Material(models.Model):
     def __str__(self):
         return self.title
 
+
 # Домашнее задание
 class Homework(models.Model):
     title = models.CharField(max_length=200)
@@ -45,6 +49,7 @@ class Homework(models.Model):
     def __str__(self):
         return self.title
 
+
 # Сдача домашнего задания
 class HomeworkSubmission(models.Model):
     homework = models.ForeignKey(Homework, on_delete=models.CASCADE, related_name='submissions')
@@ -56,3 +61,43 @@ class HomeworkSubmission(models.Model):
 
     def __str__(self):
         return f"{self.student.username} - {self.homework.title}"
+
+
+# Модели из миграции
+class Announcement(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    date_published = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Contest(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateField()
+    attachment = models.FileField(upload_to='contests/', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class News(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    date_published = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Program(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    duration = models.CharField(max_length=100)
+    degree = models.CharField(max_length=100)
+    link = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
