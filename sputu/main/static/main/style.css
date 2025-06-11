@@ -1,8 +1,18 @@
 body {
-    background: #f7f8fa;
+    background-color: #f8fafc;
+}
+footer {
+    box-shadow: 0 -1px 5px rgba(0,0,0,.08);
 }
 
-footer {
-    font-size: 0.95em;
-    color: #6c757d;
-}
+#mainCarousel,
+#mainCarousel .carousel-inner,
+    #mainCarousel .carousel-item {
+        height: 650px;
+        min-height: 400px;
+    }
+    #mainCarousel .carousel-item img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }

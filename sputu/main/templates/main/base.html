@@ -1,41 +1,96 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>СПбУТУиЭ - Дистанционное обучение</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Хедер: Навигация -->
     <header>
-        <nav>
-            <a class="navbar-brand" href="/">
-            <img src="{% static 'main/logo.png' %}" alt="logo" style="height:40px;">
-            СПбУТУиЭ
-            </a>
-            <a href="{% url 'home' %}">Главная</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}">Личный кабинет</a>
-                <a href="{% url 'materials_list' %}">Учебные материалы</a>
-                <a href="{% url 'homework_list' %}">Домашние задания</a>
-                <a href="{% url 'logout' %}">Выйти</a>
-            {% else %}
-                <a href="{% url 'login' %}">Войти</a>
-                <a href="{% url 'register' %}">Регистрация</a>
-            {% endif %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="{% static 'main/logo.png' %}" alt="logo" height="40" class="me-2">
+                    <span>СПбУТУиЭ</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Главная</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Личный кабинет</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'materials_list' %}">Учебные материалы</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'homework_list' %}">Домашние задания</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Выйти</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Войти</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Регистрация</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
+    <!-- ...до сюда ваш header... -->
 
-    <main>
-        {% block content %}
-        {% endblock %}
+
+<!-- ...дальше ваш main... -->
+
+    <main class="flex-fill py-4 bg-light">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Учебный портал. Все права защищены.</p>
+<!-- Слайдер -->
+<div id="mainCarousel" class="carousel slide my-4" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'main/slide1.jpg' %}" class="d-block w-100" alt="Слайд 1">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'main/slide2.jpg' %}" class="d-block w-100" alt="Слайд 2">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'main/slide3.jpg' %}" class="d-block w-100" alt="Слайд 3">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'main/slide4.jpg' %}" class="d-block w-100" alt="Слайд 4">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'main/slide5.jpg' %}" class="d-block w-100" alt="Слайд 5">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Предыдущий</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Следующий</span>
+  </button>
+</div>
+    <!-- Футер -->
+    <footer class="bg-primary text-white text-center py-3 mt-auto">
+        <div class="container">
+            <small>&copy; 2025 Учебный портал. Все права защищены.</small>
+        </div>
     </footer>
+
+    <!-- Bootstrap bundle (JS + Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

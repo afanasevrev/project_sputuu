@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>СПбУТУиЭ - Дистанционное обучение</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="navbar-brand" href="/">
+            <img src="{% static 'main/logo.png' %}" alt="logo" style="height:40px;">
+            СПбУТУиЭ
+            </a>
+            <a href="{% url 'home' %}">Главная</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Личный кабинет</a>
+                <a href="{% url 'materials_list' %}">Учебные материалы</a>
+                <a href="{% url 'homework_list' %}">Домашние задания</a>
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Учебный портал. Все права защищены.</p>
+    </footer>
+</body>
+</html>
