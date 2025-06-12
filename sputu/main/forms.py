@@ -33,6 +33,11 @@ class UserRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Пароли не совпадают.')
         return cd['password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+
 class HomeworkSubmissionForm(forms.ModelForm):
     class Meta:
         model = HomeworkSubmission
