@@ -27,6 +27,12 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
 
+    username = forms.CharField(
+        label="Логин",  # <- Новый текст
+        help_text="",  # <- Убираем описание
+        max_length=150
+    )
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
