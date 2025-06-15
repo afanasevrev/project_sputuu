@@ -3,22 +3,43 @@
 {% block title %}Домашние задания{% endblock %}
 
 {% block content %}
-    <h1>Домашние задания</h1>
+<div class="container my-4">
+    <h1 class="mb-4">Домашние задания</h1>
+
     {% if homeworks %}
-        <ul>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
             {% for homework in homeworks %}
-                <li>
-                    <strong>{{ homework.title }}</strong> (Курс: {{ homework.course.name }})
-                    <p>Срок сдачи: {{ homework.deadline }}</p>
-                    {% if homework.submission %}
-                        <p>Сдано: {{ homework.submission.submitted_at }}</p>
-                    {% else %}
-                        <a href="{% url 'homework_upload' homework.id %}">Загрузить решение</a>
-                    {% endif %}
-                </li>
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">{{ homework.title }}</h5>
+                            <p class="card-text mb-1">
+                                <span class="fw-semibold text-primary">Курс:</span> {{ homework.course.name }}
+                            </p>
+                            <p class="card-text mb-2">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                <span class="fw-semibold">Срок сдачи:</span>
+                                {{ homework.deadline|date:"d.m.Y H:i" }}
+                            </p>
+                            {% if homework.submission %}
+                                <div class="alert alert-success py-2 px-3 mb-0">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    <span>Сдано: {{ homework.submission.submitted_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            {% else %}
+                                <a href="{% url 'homework_upload' homework.id %}" class="btn btn-outline-primary btn-sm mt-1">
+                                    <i class="bi bi-upload me-1"></i>Загрузить решение
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>Домашние задания отсутствуют.</p>
+        <div class="alert alert-info mt-4">
+            <i class="bi bi-info-circle me-2"></i>Домашние задания отсутствуют.
+        </div>
     {% endif %}
+</div>
 {% endblock %}
